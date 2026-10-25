@@ -1,0 +1,13 @@
+# system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# build output
+*.zxp
+*.log
+node_modules/
+
+# data created by the panel on a user's machine
+Bezify/presets/*.json
+Bezify/presets/fx/*.json
