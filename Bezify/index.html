@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bezify</title>
+<link rel="stylesheet" href="css/bezify.css">
+</head>
+<body>
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <symbol id="bezify-logo" viewBox="0 0 48 48">
+    <rect x="1.5" y="1.5" width="45" height="45" rx="10.5" fill="#2A2A2A" stroke="#D97757" stroke-width="2"/>
+    <path d="M12 36L28 36M36 12L20 12" stroke="#D97757" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M12 36C28 36 20 12 36 12" fill="none" stroke="#D97757" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="12" cy="36" r="3.2" fill="#ECE7E1"/>
+    <circle cx="36" cy="12" r="3.2" fill="#ECE7E1"/>
+    <circle cx="28" cy="36" r="2.4" fill="#D97757"/>
+    <circle cx="20" cy="12" r="2.4" fill="#D97757"/>
+  </symbol>
+</svg>
+<main class="app-shell">
+  <header class="app-header">
+    <svg class="bezify-logo" viewBox="0 0 48 48" role="img" aria-label="Bezify"><use href="#bezify-logo"/></svg>
+    <h1>Bezify</h1>
+    <button class="icon-button" id="selected-layer-button" type="button" title="Show selected layer" aria-label="Show selected layer"><svg viewBox="0 0 24 24"><path d="M12 4 4 8l8 4 8-4-8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></svg></button>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="ease" type="button" role="tab">Ease</button>
+    <button class="tab" data-tab="tools" type="button" role="tab">Tools</button>
+    <button class="tab" data-tab="fx" type="button" role="tab">FX</button>
+    <button class="tab" data-tab="animate" type="button" role="tab">Animate</button>
+    <button class="tab" data-tab="capture" type="button" role="tab">Capture</button>
+    <span class="tab-indicator"></span>
+  </nav>
+
+  <div class="panels">
+    <section class="tab-panel active" data-tab-panel="ease">
+      <section class="card curve-card">
+        <div class="card-heading">
+          <div class="title-block"><span class="eyebrow">Cubic bezier</span><h2>Curve editor</h2></div>
+          <div class="heading-actions">
+            <div class="presets-menu" data-collapsible>
+              <button class="section-toggle pill-button" type="button" title="Curve presets" aria-label="Curve presets"><span>Presets</span><svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg></button>
+              <div class="section-content">
+                <div class="menu-body">
+                  <div class="preset-grid">
+                    <button class="preset-card" data-curve-preset="ease-in" type="button">Ease In<svg viewBox="0 0 42 18"><path d="M2 16C18 16 25 15 40 2"/></svg></button>
+                    <button class="preset-card" data-curve-preset="ease-out" type="button">Ease Out<svg viewBox="0 0 42 18"><path d="M2 16C17 3 29 2 40 2"/></svg></button>
+                    <button class="preset-card" data-curve-preset="ease-in-out" type="button">Ease In-Out<svg viewBox="0 0 42 18"><path d="M2 16C14 16 25 2 40 2"/></svg></button>
+                    <button class="preset-card" data-curve-preset="overshoot" type="button">Overshoot<svg viewBox="0 0 42 18"><path d="M2 16C15 1 23-2 27 4S35 4 40 2"/></svg></button>
+                    <button class="preset-card" data-curve-preset="snappy" type="button">Snappy<svg viewBox="0 0 42 18"><path d="M2 16C10 4 20 2 40 2"/></svg></button>
+                  </div>
+                  <div class="save-row"><input id="curve-name" type="text" maxlength="40" placeholder="Name this curve..." aria-label="Curve name"><button id="save-curve-button" type="button"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6"/></svg>Save</button></div>
+                  <ul class="saved-curves" id="saved-curves"></ul>
+                </div>
+              </div>
+            </div>
+            <button class="icon-button" id="selected-keyframes-button" type="button" title="Read selected keyframes" aria-label="Read selected keyframes"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zM8 9h8M8 12h5M8 15h7"/></svg></button>
+          </div>
+        </div>
+
+        <div class="curve-editor">
+          <div class="canvas-wrap"><canvas id="curve-canvas" tabindex="0" aria-label="Cubic bezier curve editor"></canvas></div>
+          <div class="curve-controls">
+            <div class="curve-values">
+              <label>x1<input id="curve-x1" type="text" inputmode="decimal" value="0.25" aria-label="x1"></label>
+              <label>y1<input id="curve-y1" type="text" inputmode="decimal" value="0.10" aria-label="y1"></label>
+              <label>x2<input id="curve-x2" type="text" inputmode="decimal" value="0.25" aria-label="x2"></label>
+              <label>y2<input id="curve-y2" type="text" inputmode="decimal" value="1.00" aria-label="y2"></label>
+            </div>
+            <div class="curve-actions">
+              <button id="curve-copy" type="button">Copy</button>
+              <button id="curve-paste" type="button">Paste</button>
+              <label class="overshoot-toggle"><input id="curve-overshoot" type="checkbox"><span class="switch"></span><span>Overshoot</span></label>
+            </div>
+            <button class="primary-button ripple-button" id="apply-bezier-button" type="button"><span class="button-label">Apply curve</span><svg class="button-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg></button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+
+    <section class="tab-panel" data-tab-panel="tools">
+      <div class="segmented" id="tools-switch" role="tablist">
+        <button class="active" type="button" data-subtab="layer">Layer</button>
+        <button type="button" data-subtab="anchor">Anchor</button>
+      </div>
+
+      <div class="subpanel active" data-subpanel="layer">
+        <section class="card">
+          <div class="title-block"><span class="eyebrow">Motion</span><h2>Speed</h2></div>
+          <div class="speed-row">
+            <input id="speed" type="range" min="10" max="200" step="1" value="100" aria-label="Speed">
+            <output class="readout" id="speed-value">100%</output>
+          </div>
+          <div class="speed-actions">
+            <button class="toggle-button" id="speed-reverse" type="button" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5M4 9h9a6 6 0 0 1 0 12h-3"/></svg>Reverse</button>
+            <button id="speed-default" type="button">Default</button>
+          </div>
+          <div class="helper" id="speed-message">Select a footage layer, then move the slider.</div>
+        </section>
+
+        <section class="card">
+          <div class="title-block"><span class="eyebrow">Transform</span><h2>Fit to Comp</h2></div>
+          <div class="button-grid">
+            <button class="accent-outline" type="button" data-fit="fit" data-percent="100">Fit</button>
+            <button class="accent-outline" type="button" data-fit="fill" data-percent="100">Fill</button>
+            <button class="accent-outline" type="button" data-fit="original">Original</button>
+            <button class="accent-outline" type="button" data-fit="fit" data-percent="75">75%</button>
+            <button class="accent-outline" type="button" data-fit="fit" data-percent="50">50%</button>
+            <button class="accent-outline" type="button" data-fit="fit" data-percent="25">25%</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="title-block"><span class="eyebrow">Layer</span><h2>Create</h2></div>
+          <div class="button-grid">
+            <button class="accent-outline" type="button" data-create="null">Null</button>
+            <button class="accent-outline" type="button" data-create="camera">Camera</button>
+            <button class="accent-outline" type="button" data-create="text">Text</button>
+            <button class="accent-outline" type="button" data-create="solid">Solid</button>
+            <button class="accent-outline" type="button" data-create="precompose">Pre-compose</button>
+            <button class="accent-outline" type="button" data-create="adjustment">Adjustment Layer</button>
+          </div>
+        </section>
+      </div>
+
+      <div class="subpanel" data-subpanel="anchor">
+        <section class="card">
+          <div class="title-block"><span class="eyebrow">One click</span><h2>Anchor Point</h2></div>
+          <div class="anchor-layout">
+            <div class="anchor-board" aria-label="Set anchor point">
+              <button class="anchor" type="button" data-anchor="top left" data-col="0" data-row="0" aria-label="Top left"></button>
+              <button class="anchor" type="button" data-anchor="top" data-col="1" data-row="0" aria-label="Top"></button>
+              <button class="anchor" type="button" data-anchor="top right" data-col="2" data-row="0" aria-label="Top right"></button>
+              <button class="anchor" type="button" data-anchor="left" data-col="0" data-row="1" aria-label="Left"></button>
+              <button class="anchor selected" type="button" data-anchor="center" data-col="1" data-row="1" aria-label="Center"></button>
+              <button class="anchor" type="button" data-anchor="right" data-col="2" data-row="1" aria-label="Right"></button>
+              <button class="anchor" type="button" data-anchor="bottom left" data-col="0" data-row="2" aria-label="Bottom left"></button>
+              <button class="anchor" type="button" data-anchor="bottom" data-col="1" data-row="2" aria-label="Bottom"></button>
+              <button class="anchor" type="button" data-anchor="bottom right" data-col="2" data-row="2" aria-label="Bottom right"></button>
+            </div>
+            <div class="anchor-copy">
+              <h3>Set Anchor</h3>
+              <p id="anchor-note">Click a point to move the selected layer’s anchor point. The layer stays where it is.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="tab-panel" data-tab-panel="fx">
+      <section class="card fx-card">
+        <div class="title-block"><span class="eyebrow">Your effects</span><h2>Effect library</h2></div>
+        <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/></svg><input id="fx-search" type="text" placeholder="Search effect" autocomplete="off" aria-label="Search effect"></label>
+        <div class="fx-list" id="fx-list"></div>
+        <p class="fx-empty" id="fx-empty">No effects yet. Apply an effect to a layer, select it, then press Add effect.</p>
+        <button class="accent-outline add-effect" id="fx-add" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Add effect</button>
+      </section>
+    </section>
+
+    <section class="tab-panel" data-tab-panel="animate">
+      <section class="card">
+        <div class="title-block"><span class="eyebrow">Layer motion</span><h2>Quick presets</h2></div>
+        <div class="control-row">
+          <label><span>Duration <small>sec</small></span><input id="quick-duration" type="number" min="0.01" step="0.05" value="0.50"></label>
+          <label>Direction<select id="slide-direction"><option value="left">Left</option><option value="right">Right</option><option value="up">Up</option><option value="down">Down</option></select></label>
+        </div>
+        <div class="quick-grid">
+          <button data-quick-preset="slide-in" type="button">Slide In</button>
+          <button data-quick-preset="slide-out" type="button">Slide Out</button>
+          <button data-quick-preset="pop" type="button">Pop</button>
+          <button data-quick-preset="fade-in" type="button">Fade In</button>
+          <button data-quick-preset="fade-out" type="button">Fade Out</button>
+          <button data-quick-preset="bounce" type="button">Bounce</button>
+        </div>
+      </section>
+      <section class="card">
+        <div class="title-block"><span class="eyebrow">Layer sequence</span><h2>Stagger</h2></div>
+        <div class="control-row">
+          <label><span>Gap <small>frames</small></span><input id="stagger-frames" type="number" min="1" step="1" value="3"></label>
+          <label>Order<select id="stagger-mode"><option value="forward">Forward</option><option value="reverse">Reverse</option><option value="center">From center</option></select></label>
+        </div>
+        <button class="primary-button ripple-button" id="stagger-button" type="button"><span class="button-label">Stagger keyframes</span></button>
+      </section>
+    </section>
+
+    <section class="tab-panel" data-tab-panel="capture">
+      <section class="card">
+        <div class="title-block"><span class="eyebrow">Reusable motion</span><h2>Capture and Save</h2></div>
+        <p>Store the first selected layer’s transform values, keyframes, and temporal ease.</p>
+        <button class="primary-button ripple-button" id="capture-transform-button" type="button"><span class="button-label">Capture selected layer</span></button>
+        <ul class="saved-curves" id="saved-transform-presets"></ul>
+      </section>
+    </section>
+  </div>
+
+  <footer class="status-area">
+    <div id="message" role="status">Choose a layer in an active composition.</div>
+    <pre id="keyframe-results">Ready.</pre>
+  </footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="dialog-backdrop" id="dialog" hidden><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title"><h3 id="dialog-title"></h3><input id="dialog-input" type="text" maxlength="60" autocomplete="off"><div class="dialog-actions"><button id="dialog-cancel" type="button">Cancel</button><button class="primary-button" id="dialog-ok" type="button">OK</button></div></div></div>
+<script src="js/CSInterface.js"></script>
+<script src="js/ease-editor.js"></script>
+<script src="js/dialogs.js"></script>
+<script src="js/curve-presets.js"></script>
+<script src="js/quick-presets.js"></script>
+<script src="js/capture.js"></script>
+<script src="js/tools.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
