@@ -6,7 +6,7 @@ Bezify is a free, open source After Effects panel. Version 1.0.0 is released und
 
 | Ease | Tools | FX |
 |---|---|---|
-| ![Ease tab](ease.png) | ![Tools tab](tools-layer.png) | ![FX tab](fx.png) |
+| ![Ease tab](docs/screenshots/ease.png) | ![Tools tab](docs/screenshots/tools-layer.png) | ![FX tab](docs/screenshots/fx.png) |
 
 *Screenshots are UI previews of the panel.*
 
